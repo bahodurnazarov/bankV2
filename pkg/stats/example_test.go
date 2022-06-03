@@ -2,7 +2,7 @@ package stats
 
 import (
 	"fmt"
-	"github.com/bahodurnazarov/goTask/pkg/types"
+	"github.com/bahodurnazarov/bankV2/v2/pkg/types"
 )
 
 func ExampleAvg() {
@@ -27,33 +27,27 @@ func ExampleAvg() {
 	// Output: 200
 }
 
-
 func ExampleTotalInCategory() {
 	payments := []types.Payment{
 		{
 			ID: 4047,
 			Amount: 200,
-			Category: "Food",
-		},
-		{
-			ID: 4043,
-			Amount: 100,
-			Category: "Car",
+			Category: types.Category(types.StatusOk),
 		},
 		{
 			ID: 4041,
 			Amount: 300,
-			Category: "Car",
+			Category: types.Category(types.StatusOk),
 		},
-		
 		{
 			ID: 4045,
 			Amount: 100,
-			Category: "Car",
+			Category: types.Category(types.StatusFail),
 		},
 		}
-	tic := TotalInCategory(payments, "Car")
-	fmt.Println(tic)
+	total := TotalInCategory(payments, types.Category(types.StatusOk))
+	fmt.Println(total)
 
 	// Output: 500
 }
+
