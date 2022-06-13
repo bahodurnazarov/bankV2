@@ -2,6 +2,8 @@ package wallet
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
 
 	"github.com/bahodurnazarov/bankV2/v2/pkg/types"
 	"github.com/google/uuid"
@@ -109,15 +111,21 @@ func (s *Service) Pay(accountID int64, amount types.Money, category types.Catego
 	if account.Balance < amount {
 		return nil, ErrNotEnoughBalance
 	}
-	//var paymentID int64
+
 	account.Balance -= amount
-	paymentID := uuid.New().String()
+	paymentID, err := strconv.ParseInt(uuid.New().String(), 10, 64)
+	if err != nil {
+		fmt.Println(err)
+		return &types.Payment{}, err
+	}
+
+
 	payment := &types.Payment{
 		ID:        paymentID,
 		AccountID: accountID,
 		Amount:    amount,
 		Category:  category,
-		Status:    types.StatusInProgress,
+		Status:   types.StatusInProgress,
 	}
 	s.payments = append(s.payments, payment)
 	return payment, nil

@@ -36,6 +36,16 @@ func FilterByCategory(payments []types.Payment, category types.Category) []types
 }
 
 
+func CategoriesTotal(payments []types.Payment) map[types.Category]types.Money {
+	categories := map[types.Category]types.Money{}
+
+	for _, payment := range payments {
+		categories[payment.Category] += payment.Amount
+	}
+
+	return categories
+}
+
 func CategoriesAvg(payments []types.Payment) map[types.Category]types.Money {
 	categories := map[types.Category]types.Money{}
 	counter := map[types.Category]int64{}
@@ -51,15 +61,12 @@ func CategoriesAvg(payments []types.Payment) map[types.Category]types.Money {
 	return categories 
 }
 
-func CategoriesTotal(payments []types.Payment) map[types.Category]types.Money {
-	categories := map[types.Category]types.Money{}
 
-	for _, payment := range payments {
-		categories[payment.Category] += payment.Amount
+func PeriodsDynamic(first map[types.Category]types.Money, second map[types.Category]types.Money) map[types.Category]types.Money {
+	periods := map[types.Category]types.Money{}
+	for k, v := range first {
+		periods[k] = v - second[k]
 	}
+	return periods
 
-	return categories
 }
-
-
-
